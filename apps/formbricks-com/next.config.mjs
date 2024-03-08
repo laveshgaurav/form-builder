@@ -32,29 +32,29 @@ const nextConfig = {
       },
     ],
   },
+  const REDIRECT_RULES = [
+    {
+      source: "/demo",
+      destination: "/",
+      permanent: false,
+    },
+    {
+      source: "/discord",
+      destination: "https://discord.gg/3YFcABF2Ts",
+      permanent: true,
+    },
+    {
+      source: "/roadmap",
+      destination: "https://github.com/orgs/formbricks/projects/1",
+      permanent: true,
+    },
+    // Add more rules here...
+  ];
+  
+  // Then use it in the redirects function
   async redirects() {
-    return [
-      {
-        source: "/demo",
-        destination: "/",
-        permanent: false,
-      },
-      {
-        source: "/discord",
-        destination: "https://discord.gg/3YFcABF2Ts",
-        permanent: true,
-      },
-      {
-        source: "/roadmap",
-        destination: "https://github.com/orgs/formbricks/projects/1",
-        permanent: true,
-      },
-      {
-        source: "/github",
-        destination: "https://github.com/formbricks/formbricks",
-        permanent: true,
-      },
-      {
+    return REDIRECT_RULES;
+  }
         source: "/deal",
         destination: "/concierge",
         permanent: false,
