@@ -48,31 +48,31 @@ export const Hero: React.FC = ({}) => {
         </p>
 
         <div className="mx-auto mt-5 max-w-3xl items-center px-4 sm:flex sm:justify-center md:mt-6 md:space-x-8 md:px-0">
-          <div className="grid grid-cols-6 items-center gap-6 pt-2 md:gap-8">
-            <Image
-              src={FlixbusLogo}
-              alt="Flixbus Flix Flixtrain Logo"
-              className="rounded-lg pb-1 "
-              width={200}
-            />
-            <Image src={CalLogoLight} alt="Cal Logo" className="block rounded-lg  dark:hidden" width={170} />
-            <Image src={CalLogoDark} alt="Cal Logo" className="hidden rounded-lg  dark:block" width={170} />
-            <Image src={ThemeisleLogo} alt="ThemeIsle Logo" className="pb-1" width={200} />
-
-            <Image
-              src={CrowdLogoLight}
-              alt="Crowd.dev Logo"
-              className="block rounded-lg pb-1  dark:hidden"
-              width={200}
-            />
-            <Image
-              src={CrowdLogoDark}
-              alt="Crowd.dev Logo"
-              className="hidden rounded-lg pb-1  dark:block"
-              width={200}
-            />
-            <Image src={OptimoleLogo} alt="Optimole Logo" className="pb-1" width={200} />
-            <Image src={NILogoDark} alt="Neverinstall Logo" className="block pb-1  dark:hidden" width={200} />
+          const logos = [
+            { src: FlixbusLogo, alt: "Flixbus Flix Flixtrain Logo", className: "rounded-lg pb-1", width: 200 },
+            { src: CalLogoLight, alt: "Cal Logo", className: "block rounded-lg  dark:hidden", width: 170 },
+            { src: CalLogoDark, alt: "Cal Logo", className: "hidden rounded-lg  dark:block", width: 170 },
+            { src: ThemeisleLogo, alt: "ThemeIsle Logo", className: "pb-1", width: 200 },
+            { src: CrowdLogoLight, alt: "Crowd.dev Logo", className: "block rounded-lg pb-1  dark:hidden", width: 200 },
+            { src: CrowdLogoDark, alt: "Crowd.dev Logo", className: "hidden rounded-lg pb-1  dark:block", width: 200 },
+            { src: OptimoleLogo, alt: "Optimole Logo", className: "pb-1", width: 200 },
+            { src: NILogoDark, alt: "Neverinstall Logo", className: "block pb-1  dark:hidden", width: 200 },
+            { src: NILogoLight, alt: "Neverinstall Logo", className: "hidden  pb-1  dark:block", width: 200 }
+          ];
+          
+          return (
+            <div className="grid grid-cols-6 items-center gap-6 pt-2 md:gap-8">
+              {logos.map((logo, index) => (
+                <Image
+                  key={index}
+                  src={logo.src}
+                  alt={logo.alt}
+                  className={logo.className}
+                  width={logo.width}
+                />
+              ))}
+            </div>
+          );
             <Image
               src={NILogoLight}
               alt="Neverinstall Logo"
