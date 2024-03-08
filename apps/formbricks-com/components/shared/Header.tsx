@@ -102,21 +102,21 @@ export default function Header() {
   const router = useRouter();
   const [stickyNav, setStickyNav] = useState(false);
 
+  import { throttle } from 'lodash';
+  
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
       if (window.scrollY > 250) {
         setStickyNav(true);
       } else {
         setStickyNav(false);
       }
-    };
+    }, 200);
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  const stickyNavClass = stickyNav
     ? `bg-transparent dark:bg-slate-900/[0.8] shadow-md backdrop-blur-lg fixed top-0 z-30 w-full`
     : "relative";
   return (
