@@ -85,19 +85,19 @@ export default function Footer() {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-8 lg:col-span-2 lg:grid-cols-4">
-          <div>
-            <h4 className="mb-2 font-medium text-slate-700">Formbricks</h4>
-            {navigation.footernav.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="my-1 block text-slate-500 hover:text-slate-600">
-                {item.name}
-              </Link>
-            ))}
-          </div>
-          <div>
-            <h4 className="mb-2 font-medium text-slate-700">Product</h4>
+          const FooterLink = ({item}) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="my-1 block text-slate-500 hover:text-slate-600">
+              {item.name}
+            </Link>
+          );
+          
+          // Usage
+          {navigation.legal.map((item) => (
+            <FooterLink item={item} />
+          ))}
             {navigation.products.map((item) => (
               <Link
                 key={item.name}
