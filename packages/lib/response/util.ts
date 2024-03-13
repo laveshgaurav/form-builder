@@ -18,6 +18,7 @@ import {
 } from "@formbricks/types/responses";
 import { TSurvey, TSurveyQuestionType } from "@formbricks/types/surveys";
 
+import { sanitizeString } from "../strings";
 import { getTodaysDateTimeFormatted } from "../time";
 import { evaluateCondition } from "../utils/evaluateLogic";
 
@@ -307,10 +308,10 @@ export const buildWhereClause = (filterCriteria?: TResponseFilterCriteria) => {
 };
 
 export const getResponsesFileName = (surveyName: string, extension: string) => {
-  // replacing / with : to avoid url issues
-  surveyName = surveyName.replaceAll("/", ":");
+  const sanitizedSurveyName = sanitizeString(surveyName);
+
   const formattedDateString = getTodaysDateTimeFormatted("-");
-  return `export-${surveyName.split(" ").join("-")}-${formattedDateString}.${extension}`.toLocaleLowerCase();
+  return `export-${sanitizedSurveyName.split(" ").join("-")}-${formattedDateString}.${extension}`.toLocaleLowerCase();
 };
 
 export const extracMetadataKeys = (obj: TResponse["meta"]) => {
