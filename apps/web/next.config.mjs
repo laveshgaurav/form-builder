@@ -4,7 +4,7 @@ import createJiti from "jiti";
 
 const jiti = createJiti(new URL(import.meta.url).pathname);
 
-jiti("@formbricks/lib/env");
+// jiti("@formbricks/lib/env");
 
 /** @type {import('next').NextConfig} */
 

@@ -1,9 +1,11 @@
 "use client";
 
 import { replacePresetPlaceholders } from "@/app/lib/templates";
+import TemplateBG from "@/images/assets/template_bg.png";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { SparklesIcon } from "@heroicons/react/24/solid";
 import { SplitIcon } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -17,7 +19,7 @@ import { Button } from "@formbricks/ui/Button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@formbricks/ui/Tooltip";
 
 import { createSurveyAction } from "../actions";
-import { customSurvey, templates, testTemplate } from "./templates";
+import { customSurvey, synchroworkTemplate, templates, testTemplate } from "./templates";
 
 type TemplateList = {
   environmentId: string;
@@ -101,7 +103,8 @@ export default function TemplateList({
   });
 
   return (
-    <main className="relative z-0 flex-1 overflow-y-auto px-6 pb-6 pt-3 focus:outline-none">
+    <>
+      {/* <main className="relative z-0 flex-1 overflow-y-auto px-6 pb-6 pt-3 focus:outline-none">
       <div className="mb-6 flex flex-wrap gap-1">
         {categories.map((category) => (
           <button
@@ -165,6 +168,7 @@ export default function TemplateList({
               activeTemplate?.name === template.name && "ring-2 ring-slate-400",
               "duration-120 group relative cursor-pointer rounded-lg bg-white p-6 shadow transition-all duration-150 hover:scale-105"
             )}>
+            okkkkk
             <div className="flex">
               <div
                 className={`rounded border px-1.5 py-0.5 text-xs ${
@@ -212,6 +216,26 @@ export default function TemplateList({
           </div>
         ))}
       </div>
-    </main>
+    </main> */}
+
+      <div className="container grid grid-cols-4 gap-x-4 ">
+        {synchroworkTemplate.map((item, index) => (
+          <div
+            className="cursor-pointer rounded-lg border  p-4"
+            onClick={() => {
+              const newTemplate = replacePresetPlaceholders(item, product);
+              onTemplateClick(newTemplate);
+              setActiveTemplate(newTemplate);
+            }}
+            key={item.name}>
+            <div className="container mx-auto mb-4 rounded-lg border bg-[#EFF6FF]">
+              <Image src={TemplateBG} alt="template" className="w-[100%]" />
+            </div>
+            <h1 className="mb-3 text-[14px] font-bold text-[#343B46]">{item.name}</h1>
+            <h2 className="text-[14px] font-normal text-[#677990]">{item.description}</h2>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }
