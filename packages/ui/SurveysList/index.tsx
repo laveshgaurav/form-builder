@@ -1,11 +1,19 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import TemplateBG from "@/images/assets/template_bg.png";
+import { Ellipsis, Equal, MenuSquareIcon, PlusIcon } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 
+import { cn } from "@formbricks/lib/cn";
 import { TEnvironment } from "@formbricks/types/environment";
 import { TSurvey } from "@formbricks/types/surveys";
 
+// import {  synchroworkTemplate } from "apps/web/app/(app)/environments/[environmentId]/surveys/templates/templates.ts";
+// packages/ui/SurveysList/index.tsx
+import { synchroworkTemplate } from "../../../apps/web/app/(app)/environments/[environmentId]/surveys/templates/templates";
+import { replacePresetPlaceholders } from "../../../apps/web/app/lib/templates.js";
+import { Input } from "../Input";
 import { Button } from "../v2/Button";
 import SurveyCard from "./components/SurveyCard";
 import SurveyFilters from "./components/SurveyFilters";
@@ -32,15 +40,23 @@ export default function SurveysList({
   const [orientation, setOrientation] = useState(() =>
     typeof localStorage !== "undefined" ? localStorage.getItem("surveyOrientation") || "grid" : "grid"
   );
+  const [mode, setMode] = useState<string>("Recent Items");
 
   // Save orientation to localStorage
   useEffect(() => {
     localStorage.setItem("surveyOrientation", orientation);
   }, [orientation]);
 
+  const surveyStatusLabel = (s: string) => {
+    if (s === "inProgress") return "Active";
+    else if (s === "completed") return "Completed";
+    else if (s === "draft") return "Draft";
+    else if (s === "paused") return "Paused";
+  };
+
   return (
     <div className="space-y-4">
-      <div className="flex justify-between">
+      {/* <div className="flex justify-between">
         <h1 className="my-2 text-3xl font-bold text-slate-800">Surveys</h1>
         <Button
           href={`/environments/${environment.id}/surveys/templates`}
@@ -48,14 +64,17 @@ export default function SurveysList({
           EndIcon={PlusIcon}>
           New survey
         </Button>
-      </div>
+      </div> */}
       <SurveyFilters
         surveys={surveys}
         setFilteredSurveys={setFilteredSurveys}
         orientation={orientation}
         setOrientation={setOrientation}
         userId={userId}
+        mode={mode}
+        setMode={setMode}
       />
+
       {filteredSurveys.length > 0 ? (
         <div>
           {orientation === "list" && (
@@ -82,8 +101,8 @@ export default function SurveysList({
               })}
             </div>
           )}
-          {orientation === "grid" && (
-            <div className="grid grid-cols-4 place-content-stretch gap-4 lg:grid-cols-6 ">
+          {mode === "Recent Items" && (
+            <div className="container grid grid-cols-4 gap-x-4 ">
               {filteredSurveys.map((survey) => {
                 return (
                   <SurveyCard
@@ -97,6 +116,26 @@ export default function SurveysList({
                   />
                 );
               })}
+            </div>
+          )}
+          {mode === "Templates" && (
+            <div className="container grid grid-cols-4 gap-x-4 ">
+              {synchroworkTemplate.map((item, index) => (
+                <div
+                  className="cursor-pointer rounded-lg border  p-4"
+                  //  onClick={() => {
+                  //    const newTemplate = replacePresetPlaceholders(item, product);
+                  //    onTemplateClick(newTemplate);
+                  //    setActiveTemplate(newTemplate);
+                  //  }}
+                  key={item.name}>
+                  <div className="container mx-auto mb-4 rounded-lg border bg-[#EFF6FF]">
+                    <Image src={TemplateBG} alt="template" className="w-[100%]" />
+                  </div>
+                  <h1 className="mb-3 text-[14px] font-bold text-[#343B46]">{item.name}</h1>
+                  <h2 className="text-[14px] font-normal text-[#677990]">{item.description}</h2>
+                </div>
+              ))}
             </div>
           )}
         </div>

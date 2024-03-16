@@ -1,4 +1,4 @@
-import { ChevronDownIcon, Equal, Grid2X2, Search, X } from "lucide-react";
+import { ChevronDownIcon, Ellipsis, Equal, Grid2X2, Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { TSurvey } from "@formbricks/types/surveys";
@@ -6,6 +6,7 @@ import { TSurvey } from "@formbricks/types/surveys";
 import { Button } from "../../Button";
 import { Checkbox } from "../../Checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../DropdownMenu";
+import { Input } from "../../Input";
 import { TooltipRenderer } from "../../Tooltip";
 
 interface SurveyFilterProps {
@@ -14,6 +15,8 @@ interface SurveyFilterProps {
   orientation: string;
   setOrientation: (orientation: string) => void;
   userId: string;
+  mode: string;
+  setMode: (mode: string) => void;
 }
 interface TFilterOption {
   label: string;
@@ -84,6 +87,8 @@ export default function SurveyFilters({
   orientation,
   setOrientation,
   userId,
+  mode,
+  setMode,
 }: SurveyFilterProps) {
   const [createdByFilter, setCreatedByFilter] = useState<string[]>([]);
   const [statusFilters, setStatusFilters] = useState<string[]>([]);
@@ -204,104 +209,135 @@ export default function SurveyFilters({
   };
 
   return (
-    <div className="flex justify-between">
-      <div className="flex space-x-2">
-        <div className="flex h-8 items-center rounded-lg border border-slate-300 bg-white px-4">
-          <Search className="h-4 w-4" />
-          <input
-            type="text"
-            className="border-none bg-transparent placeholder:text-sm"
-            placeholder="Search by survey name"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-
-        <div>
-          <FilterDropdown
-            title="Created By"
-            id="creatorDropdown"
-            options={creatorOptions}
-            selectedOptions={createdByFilter}
-            setSelectedOptions={setCreatedByFilter}
-            isOpen={dropdownOpenStates.get("creatorDropdown")}
-          />
-        </div>
-        <div>
-          <FilterDropdown
-            title="Status"
-            id="statusDropdown"
-            options={statusOptions}
-            selectedOptions={statusFilters}
-            setSelectedOptions={setStatusFilters}
-            isOpen={dropdownOpenStates.get("statusDropdown")}
-          />
-        </div>
-        <div>
-          <FilterDropdown
-            title="Type"
-            id="typeDropdown"
-            options={typeOptions}
-            selectedOptions={typeFilters}
-            setSelectedOptions={setTypeFilters}
-            isOpen={dropdownOpenStates.get("typeDropdown")}
-          />
-        </div>
-        {(createdByFilter.length > 0 || statusFilters.length > 0 || typeFilters.length > 0) && (
-          <Button
-            variant="darkCTA"
-            size="sm"
-            onClick={() => {
-              setCreatedByFilter([]);
-              setStatusFilters([]);
-              setTypeFilters([]);
-            }}
-            className="h-8"
-            EndIcon={X}
-            endIconClassName="h-4 w-4">
-            Clear Filters
-          </Button>
-        )}
-      </div>
-      <div className="flex space-x-2">
-        <TooltipRenderer
-          shouldRender={true}
-          tooltipContent={getToolTipContent("List")}
-          className="bg-slate-900 text-white">
-          <div
-            className={`flex  h-8 w-8  items-center justify-center  rounded-lg border  p-1 ${orientation === "list" ? "bg-slate-900 text-white" : "bg-white"}`}
-            onClick={() => setOrientation("list")}>
-            <Equal className="h-5 w-5" />
+    <>
+      {/* <div className="flex justify-between">
+        <div className="flex space-x-2">
+          <div className="flex h-8 items-center rounded-lg border border-slate-300 bg-white px-4">
+            <Search className="h-4 w-4" />
+            <input
+              type="text"
+              className="border-none bg-transparent placeholder:text-sm"
+              placeholder="Search by survey name"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
-        </TooltipRenderer>
 
-        <TooltipRenderer
-          shouldRender={true}
-          tooltipContent={getToolTipContent("Grid")}
-          className="bg-slate-900 text-white">
-          <div
-            className={`flex h-8 w-8  items-center justify-center rounded-lg border  p-1 ${orientation === "grid" ? "bg-slate-900 text-white" : "bg-white"}`}
-            onClick={() => setOrientation("grid")}>
-            <Grid2X2 className="h-5 w-5" />
+          <div>
+            <FilterDropdown
+              title="Created By"
+              id="creatorDropdown"
+              options={creatorOptions}
+              selectedOptions={createdByFilter}
+              setSelectedOptions={setCreatedByFilter}
+              isOpen={dropdownOpenStates.get("creatorDropdown")}
+            />
           </div>
-        </TooltipRenderer>
+          <div>
+            <FilterDropdown
+              title="Status"
+              id="statusDropdown"
+              options={statusOptions}
+              selectedOptions={statusFilters}
+              setSelectedOptions={setStatusFilters}
+              isOpen={dropdownOpenStates.get("statusDropdown")}
+            />
+          </div>
+          <div>
+            <FilterDropdown
+              title="Type"
+              id="typeDropdown"
+              options={typeOptions}
+              selectedOptions={typeFilters}
+              setSelectedOptions={setTypeFilters}
+              isOpen={dropdownOpenStates.get("typeDropdown")}
+            />
+          </div>
+          {(createdByFilter.length > 0 || statusFilters.length > 0 || typeFilters.length > 0) && (
+            <Button
+              variant="darkCTA"
+              size="sm"
+              onClick={() => {
+                setCreatedByFilter([]);
+                setStatusFilters([]);
+                setTypeFilters([]);
+              }}
+              className="h-8"
+              EndIcon={X}
+              endIconClassName="h-4 w-4">
+              Clear Filters
+            </Button>
+          )}
+        </div>
+      </div> */}
 
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            asChild
-            className="surveyFilterDropdown h-full cursor-pointer border border-slate-700 outline-none hover:bg-slate-900">
-            <div className="min-w-auto h-8 rounded-md border sm:flex sm:px-2">
-              <div className="hidden w-full items-center justify-between hover:text-white sm:flex">
-                <span className="text-sm ">Sort by: {sortBy.label}</span>
-                <ChevronDownIcon className="ml-2 h-4 w-4" />
+      <div>
+        <div className="mb-2 flex items-center justify-between">
+          <div>
+            <h1 className="text-[24px] font-semibold text-[#22272F]">My Workspace</h1>
+            <p className="text-[14px] font-medium text-[#677990]">
+              List of all the sheets that you’ve created
+            </p>
+          </div>
+          <div className="flex gap-x-4">
+            <Input placeholder="Search" className="focus:border-[#155EEF]" />
+            <button
+              className="text-nowrap rounded-md bg-[#155EEF] px-6 py-2 text-white"
+              //   onClick={() => {
+              //     const newTemplate = replacePresetPlaceholders(customSurvey, product);
+              //     newSurveyFromTemplate(newTemplate);
+              //     setActiveTemplate(newTemplate);
+              // }}
+            >
+              Create New
+            </button>
+          </div>
+        </div>
+        <div className="container flex items-center justify-between">
+          <div className="flex w-max gap-x-4  rounded bg-[#F6F7F9] p-2">
+            {["Recent Items", "Templates"].map((btn, idx) => (
+              <button
+                className={`w-[240px] rounded px-4 py-2 text-[14px] text-[#677990] ${mode === btn && "bg-white text-[#155EEF] shadow"}`}
+                onClick={() => setMode(btn)}>
+                {btn}
+              </button>
+            ))}
+          </div>
+
+          {/* <div className="flex items-center space-x-2">
+            <select className="rounded border-[1px] border-[#E2E8F0] focus:border-[#E2E8F0]">
+              <option selected disabled value={""}>
+                All Files
+              </option>
+              <option value={1}>My Template</option>
+              <option value={2}>Template</option>
+            </select>
+            <TooltipRenderer
+              shouldRender={true}
+              tooltipContent={getToolTipContent("List")}
+              className="bg-slate-900 text-white">
+              <div
+                className={`flex  h-8 w-8  items-center justify-center  rounded-lg border  p-1 ${orientation === "list" ? "bg-slate-900 text-white" : "bg-white"}`}
+                onClick={() => setOrientation("list")}>
+                <Equal className="h-5 w-5" />
               </div>
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="bg-slate-900 ">
-            {sortOptions.map(renderSortOption)}
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </TooltipRenderer>
+
+            <TooltipRenderer
+              shouldRender={true}
+              tooltipContent={getToolTipContent("Grid")}
+              className="bg-slate-900 text-white">
+              <div
+                className={`flex h-8 w-8  items-center justify-center rounded-lg border  p-1 ${orientation === "grid" ? "bg-slate-900 text-white" : "bg-white"}`}
+                onClick={() => setOrientation("grid")}>
+                <Grid2X2 className="h-5 w-5" />
+              </div>
+            </TooltipRenderer>
+
+        
+          </div> */}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
